@@ -234,12 +234,12 @@ public class FloatingAdView extends LinearLayout {
 
         } else {
 
-            titleTv.setBackgroundColor(titleColor);
-            titleTv.setAlpha(0.8f);
-            subtitleTv.setBackgroundColor(titleColor);
-            subtitleTv.setAlpha(0.6f);
-            icon.setBackgroundColor(titleColor);
-            icon.setAlpha(0.7f);
+            titleTv.setBackgroundColor(subtitleColor);
+            titleTv.setAlpha(0.5f);
+            subtitleTv.setBackgroundColor(subtitleColor);
+            subtitleTv.setAlpha(0.3f);
+            icon.setBackgroundColor(subtitleColor);
+            icon.setAlpha(0.4f);
 
             a = ObjectAnimator.ofFloat(view, "alpha", 0.1f, 1);
             a.setDuration(800);
