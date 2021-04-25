@@ -8,7 +8,7 @@
     android:layout_margin="8dp"
     app:cardElevation="3dp"
     app:cardCornerRadius="5dp"
-    app:cardBackgroundColor="#00000000"
+    app:cardBackgroundColor="#FFFFFF"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
