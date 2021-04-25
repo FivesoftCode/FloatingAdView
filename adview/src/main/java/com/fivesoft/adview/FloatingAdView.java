@@ -26,11 +26,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
-
-import java.util.Collections;
-import java.util.List;
 
 public class FloatingAdView extends LinearLayout {
 
@@ -40,7 +35,7 @@ public class FloatingAdView extends LinearLayout {
     private String premiumPackage;
     private int minGetPremiumPromoDisplay = 5000;
     private String adUnitId = AD_UNIT_TEST;
-
+    private int adColor = Color.WHITE;
 
     private AdView adView;
     private View goPremium;
@@ -101,6 +96,7 @@ public class FloatingAdView extends LinearLayout {
             if(premiumPackage == null)
                 premiumPackage = getContext().getPackageName();
             minGetPremiumPromoDisplay = a.getInt(R.styleable.FloatingAdView_minPremiumPromoDisplayTime, 5000);
+            adColor = a.getColor(R.styleable.FloatingAdView_adColor, Color.WHITE);
         } finally {
             a.recycle();
         }
@@ -113,6 +109,7 @@ public class FloatingAdView extends LinearLayout {
         mainLinear.removeAllViews();
         mainLinear.addView(goPremium);
         promoDisplayStart = System.currentTimeMillis();
+        setBackgroundColor(adColor);
         loadAd(adUnitId);
     }
 
