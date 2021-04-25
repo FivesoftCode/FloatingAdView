@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FloatingAdView">
+        <attr name="promotePremium" format="boolean" />
+        <attr name="adUnitId" format="string"/>
+        <attr name="premiumVersionPackageName" format="string"/>
+        <attr name="minPremiumPromoDisplayTime" format="integer"/>
+    </declare-styleable>
+</resources>
