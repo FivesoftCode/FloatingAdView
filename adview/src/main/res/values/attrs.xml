@@ -5,6 +5,10 @@
         <attr name="adUnitId" format="string"/>
         <attr name="premiumVersionPackageName" format="string"/>
         <attr name="minPremiumPromoDisplayTime" format="integer"/>
+        <attr name="adSubtitle" format="string"/>
+        <attr name="adTitle" format="string"/>
         <attr name="adColor" format="color"/>
+        <attr name="adSubtitleTextColor" format="color"/>
+        <attr name="adTitleTextColor" format="color"/>
     </declare-styleable>
 </resources>

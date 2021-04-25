@@ -10,12 +10,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
@@ -44,6 +47,12 @@ public class FloatingAdView extends LinearLayout {
     private OnUserWantsPremiumListener listener;
 
     private long promoDisplayStart = 0;
+
+    private int titleColor;
+    private int subtitleColor;
+
+    private String title;
+    private String subtitle;
 
     public FloatingAdView(@NonNull Context context) {
         super(context);
@@ -97,6 +106,19 @@ public class FloatingAdView extends LinearLayout {
                 premiumPackage = getContext().getPackageName();
             minGetPremiumPromoDisplay = a.getInt(R.styleable.FloatingAdView_minPremiumPromoDisplayTime, 5000);
             adColor = a.getColor(R.styleable.FloatingAdView_adColor, Color.WHITE);
+
+            titleColor = a.getColor(R.styleable.FloatingAdView_adTitleTextColor, getColorFromAttr(R.attr.colorPrimary));
+            subtitleColor = a.getColor(R.styleable.FloatingAdView_adSubtitleTextColor, Color.parseColor("#494949"));
+
+            title = a.getString(R.styleable.FloatingAdView_adTitle);
+            subtitle = a.getString(R.styleable.FloatingAdView_adSubtitle);
+
+            if(title == null)
+                title = "Go Premium!";
+
+            if(subtitle == null)
+                subtitle = "Don't want ads?";
+
         } finally {
             a.recycle();
         }
@@ -192,6 +214,9 @@ public class FloatingAdView extends LinearLayout {
 
         LinearLayout main = view.findViewById(R.id.main);
 
+        TextView titleTv = view.findViewById(R.id.title);
+        TextView subtitleTv = view.findViewById(R.id.subtitle);
+
         if(promotePremiumVersion){
             icon.setImageDrawable(getContext().getApplicationInfo().loadIcon(getContext().getPackageManager()));
             main.setOnClickListener(v -> {
@@ -200,7 +225,22 @@ public class FloatingAdView extends LinearLayout {
                 else
                     listener.onUserWantsPremium();
             });
+
+            titleTv.setTextColor(titleColor);
+            subtitleTv.setTextColor(subtitleColor);
+
+            titleTv.setText(title);
+            subtitleTv.setText(subtitle);
+
         } else {
+
+            titleTv.setBackgroundColor(titleColor);
+            titleTv.setAlpha(0.8f);
+            subtitleTv.setBackgroundColor(titleColor);
+            subtitleTv.setAlpha(0.6f);
+            icon.setBackgroundColor(titleColor);
+            icon.setAlpha(0.7f);
+
             a = ObjectAnimator.ofFloat(view, "alpha", 0.1f, 1);
             a.setDuration(800);
             a.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -241,5 +281,16 @@ public class FloatingAdView extends LinearLayout {
     public void setBackgroundColor(int color) {
         CardView cardView = findViewById(R.id.main_cv);
         cardView.setCardBackgroundColor(color);
+    }
+
+    private int getColorFromAttr(@AttrRes int colorRes) {
+        TypedValue typedValue = new TypedValue();
+
+        TypedArray a = getContext().obtainStyledAttributes(typedValue.data, new int[] { colorRes });
+        int color = a.getColor(0, 0);
+
+        a.recycle();
+
+        return color;
     }
 }
