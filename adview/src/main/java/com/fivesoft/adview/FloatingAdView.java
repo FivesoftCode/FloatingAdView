@@ -18,8 +18,8 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
-import com.fivesoft.smartutil.L;
 import com.fivesoft.smartutil.ViewUtil;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -119,11 +119,6 @@ public class FloatingAdView extends LinearLayout {
     private void loadAd(String adUnit){
         post(() -> {
 
-            List<String> testDeviceIds = Collections.singletonList("6317935EBEA69A3942EB498613892463");
-            RequestConfiguration configuration =
-                    new RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build();
-            MobileAds.setRequestConfiguration(configuration);
-
             adView = new AdView(getContext());
             adView.setAdSize(AdSize.BANNER);
             adView.setAdUnitId(adUnit);
@@ -148,18 +143,14 @@ public class FloatingAdView extends LinearLayout {
                 @Override
                 public void onAdLoaded() {
                     postDelayed(() -> {
-                        new Thread(() -> post(() -> {
-                            adView.setBackgroundColor(getAdDominantColor());
-                        })).start();
+                        new Thread(() -> post(() -> adView.setBackgroundColor(getAdDominantColor()))).start();
                         setAdViewVisible(true);
                     }, promotePremiumVersion ? Math.max(0, minGetPremiumPromoDisplay - (System.currentTimeMillis() - promoDisplayStart)) : 300);
                 }
 
                 @Override
                 public void onAdImpression() {
-                    new Thread(() -> post(() -> {
-                        adView.setBackgroundColor(getAdDominantColor());
-                    })).start();
+                    new Thread(() -> post(() -> adView.setBackgroundColor(getAdDominantColor()))).start();
                 }
             });
             adView.loadAd(adRequest);
@@ -178,7 +169,6 @@ public class FloatingAdView extends LinearLayout {
                 return  null;
             }
         } catch (Exception e){
-            L.log(e);
             return null;
         }
     }
@@ -235,7 +225,6 @@ public class FloatingAdView extends LinearLayout {
         a.addUpdateListener(animation -> {
             goPremium.setY((float) animation.getAnimatedValue() * (b ? -1 : 1));
             adView.setY(getHeight() + (float) animation.getAnimatedValue() * (b ? -1 : 1));
-            L.log(adView.getY());
         });
         a.setDuration(500);
         a.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -251,5 +240,9 @@ public class FloatingAdView extends LinearLayout {
         }
     }
 
-
+    @Override
+    public void setBackgroundColor(int color) {
+        CardView cardView = findViewById(R.id.main_cv);
+        cardView.setCardBackgroundColor(color);
+    }
 }
