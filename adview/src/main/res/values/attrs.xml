@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FloatingAdView">
+        <!-- If you want to promote premium version of your app
+         set this parameter to true. When regular ad (from AdMob)
+         is loading, there will be your premium app promotion
+         banner displayed.-->
         <attr name="promotePremium" format="boolean" />
+        <!-- Your ad unit id from AdMob. When you don't pass this
+        parameter, there will be automatically test ad displayed. You can
+        also pass "ALWAYS_LOADING" value, then ad will be never display, so you
+        will can see how it behave when ad is loading.-->
         <attr name="adUnitId" format="string"/>
+        <!-- Package name of your premium app version used to open
+        Play Store page with your app, when user clicks the banner.-->
         <attr name="premiumVersionPackageName" format="string"/>
+        <!-- Minimum time (in millis) when your premium app version promotion banner
+        will be displayed. By default it is set to 5000. This shouldn't be greater than 10 000.-->
         <attr name="minPremiumPromoDisplayTime" format="integer"/>
         <attr name="adSubtitle" format="string"/>
         <attr name="adTitle" format="string"/>
+        <!-- Background color of the ad. Tip: Don't pass here transparent color, because it looks awful then.-->
         <attr name="adColor" format="color"/>
         <attr name="adSubtitleTextColor" format="color"/>
         <attr name="adTitleTextColor" format="color"/>

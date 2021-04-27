@@ -98,7 +98,7 @@ public class FloatingAdView extends LinearLayout {
 
         try {
             adUnitId = a.getString(R.styleable.FloatingAdView_adUnitId);
-            if(adUnitId == null)
+            if(adUnitId == null || adUnitId.equalsIgnoreCase("TEST"))
                 adUnitId = AD_UNIT_TEST;
             promotePremiumVersion = a.getBoolean(R.styleable.FloatingAdView_promotePremium, false);
             premiumPackage = a.getString(R.styleable.FloatingAdView_premiumVersionPackageName);
@@ -172,7 +172,9 @@ public class FloatingAdView extends LinearLayout {
                     new Thread(() -> post(() -> adView.setBackgroundColor(getAdDominantColor()))).start();
                 }
             });
-            adView.loadAd(adRequest);
+
+            if(!adUnitId.equalsIgnoreCase("ALWAYS_LOADING"))
+                adView.loadAd(adRequest);
         });
     }
 
@@ -238,6 +240,7 @@ public class FloatingAdView extends LinearLayout {
             titleTv.setAlpha(0.5f);
             subtitleTv.setBackgroundColor(subtitleColor);
             subtitleTv.setAlpha(0.3f);
+            icon.setImageBitmap(null);
             icon.setBackgroundColor(subtitleColor);
             icon.setAlpha(0.4f);
 
