@@ -162,20 +162,34 @@ public class FloatingAdView extends LinearLayout {
                 @Override
                 public void onAdLoaded() {
                     postDelayed(() -> {
-                        new Thread(() -> post(() -> adView.setBackgroundColor(getAdDominantColor()))).start();
+                        updateAdViewBackgroundColor();
                         setAdViewVisible(true);
                     }, promotePremiumVersion ? Math.max(0, minGetPremiumPromoDisplay - (System.currentTimeMillis() - promoDisplayStart)) : 300);
                 }
 
                 @Override
                 public void onAdImpression() {
-                    new Thread(() -> post(() -> adView.setBackgroundColor(getAdDominantColor()))).start();
+                    updateAdViewBackgroundColor();
                 }
             });
 
             if(!adUnitId.equalsIgnoreCase("ALWAYS_LOADING"))
-                adView.loadAd(adRequest);
+                try {
+                    adView.loadAd(adRequest);
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
         });
+    }
+
+    private void updateAdViewBackgroundColor(){
+        new Thread(() -> post(() -> {
+            try {
+                adView.setBackgroundColor(getAdDominantColor());
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        })).start();
     }
 
     private Bitmap loadBitmapFromView(View v) {
