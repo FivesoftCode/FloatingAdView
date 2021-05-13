@@ -5,4 +5,4 @@ Neat floating ad view. (AdMob)
 
 Implementation: 
 
-    implementation 'com.github.FivesoftCode:FloatingAdView:1.0.5'
+    implementation 'com.github.FivesoftCode:FloatingAdView:1.0.8'
