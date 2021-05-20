@@ -3,7 +3,7 @@
     android:id="@+id/main_cv"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:minWidth="322dp"
+    android:minWidth="320dp"
     android:layout_height="50dp"
     android:layout_margin="8dp"
     app:cardElevation="3dp"
