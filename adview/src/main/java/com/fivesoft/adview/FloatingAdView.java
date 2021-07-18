@@ -29,12 +29,16 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 public class FloatingAdView extends LinearLayout {
 
     public static final String AD_UNIT_TEST = "ca-app-pub-3940256099942544/6300978111";
 
     private boolean promotePremiumVersion = true;
+    private boolean initializeMobileAds = true;
     private String premiumPackage;
     private int minGetPremiumPromoDisplay = 5000;
     private String adUnitId = AD_UNIT_TEST;
@@ -113,6 +117,8 @@ public class FloatingAdView extends LinearLayout {
             title = a.getString(R.styleable.FloatingAdView_adTitle);
             subtitle = a.getString(R.styleable.FloatingAdView_adSubtitle);
 
+            initializeMobileAds = a.getBoolean(R.styleable.FloatingAdView_initializeMobileAds, true);
+
             if(title == null)
                 title = "Go Premium!";
 
@@ -132,7 +138,14 @@ public class FloatingAdView extends LinearLayout {
         mainLinear.addView(goPremium);
         promoDisplayStart = System.currentTimeMillis();
         setBackgroundColor(adColor);
-        loadAd(adUnitId);
+
+        if(initializeMobileAds) {
+            MobileAds.initialize(getContext(), initializationStatus -> {
+                loadAd(adUnitId);
+            });
+        } else {
+            loadAd(adUnitId);
+        }
     }
 
     private void loadAd(String adUnit){

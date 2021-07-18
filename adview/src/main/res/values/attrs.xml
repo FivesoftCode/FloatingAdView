@@ -23,5 +23,6 @@
         <attr name="adColor" format="color"/>
         <attr name="adSubtitleTextColor" format="color"/>
         <attr name="adTitleTextColor" format="color"/>
+        <attr name="initializeMobileAds" format="boolean"/>
     </declare-styleable>
 </resources>
