@@ -30,8 +30,13 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class FloatingAdView extends LinearLayout {
 
@@ -43,6 +48,7 @@ public class FloatingAdView extends LinearLayout {
     private int minGetPremiumPromoDisplay = 5000;
     private String adUnitId = AD_UNIT_TEST;
     private int adColor = Color.WHITE;
+    private List<String> testDevices = new ArrayList<>();
 
     private AdView adView;
     private View goPremium;
@@ -119,6 +125,11 @@ public class FloatingAdView extends LinearLayout {
 
             initializeMobileAds = a.getBoolean(R.styleable.FloatingAdView_initializeMobileAds, true);
 
+            String testDeviceId = a.getString(R.styleable.FloatingAdView_testDeviceId);
+
+            if(testDeviceId != null)
+                testDevices = Collections.singletonList(testDeviceId);
+
             if(title == null)
                 title = "Go Premium!";
 
@@ -142,6 +153,7 @@ public class FloatingAdView extends LinearLayout {
         if(initializeMobileAds) {
             MobileAds.initialize(getContext(), initializationStatus -> {
                 loadAd(adUnitId);
+                MobileAds.setRequestConfiguration(new RequestConfiguration.Builder().setTestDeviceIds(testDevices).build());
             });
         } else {
             loadAd(adUnitId);
