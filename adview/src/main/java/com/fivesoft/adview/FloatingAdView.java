@@ -64,6 +64,8 @@ public class FloatingAdView extends LinearLayout {
     private String title;
     private String subtitle;
 
+    private boolean adsEnabled = true;
+
     public FloatingAdView(@NonNull Context context) {
         super(context);
         init();
@@ -97,6 +99,32 @@ public class FloatingAdView extends LinearLayout {
 
     public void setOnUserWantsPremiumListener(OnUserWantsPremiumListener listener){
         this.listener = listener;
+    }
+
+    /**
+     * Enables or disables displaying ads. When set to false
+     * AdMob adview will be properly disabled and the FloatingAdView
+     * will become completely invisible. ({@link View#GONE})
+     * @param enabled set to true weather you want to display ads or false if you don't want.
+     */
+
+    public void setAdsEnabled(boolean enabled){
+        if(adsEnabled == enabled)
+            return;
+
+        if(adsEnabled){
+            init();
+        } else {
+            if (adView != null){
+                adView.setEnabled(false);
+                adView.setVisibility(View.GONE);
+            }
+            if(mainLinear != null)
+                mainLinear.removeAllViews();
+
+            setVisibility(View.GONE);
+        }
+        this.adsEnabled = enabled;
     }
 
     public interface OnUserWantsPremiumListener{
