@@ -122,6 +122,7 @@ public class FloatingAdView extends LinearLayout {
             if(mainLinear != null)
                 mainLinear.removeAllViews();
 
+            this.removeAllViews();
             setVisibility(View.GONE);
         }
         this.adsEnabled = enabled;
