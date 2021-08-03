@@ -112,7 +112,8 @@ public class FloatingAdView extends LinearLayout {
         if(adsEnabled == enabled)
             return;
 
-        if(adsEnabled){
+        if(enabled){
+            setVisibility(View.VISIBLE);
             init();
         } else {
             if (adView != null){
