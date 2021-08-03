@@ -112,21 +112,23 @@ public class FloatingAdView extends LinearLayout {
         if(adsEnabled == enabled)
             return;
 
-        if(enabled){
-            setVisibility(View.VISIBLE);
-            init();
-        } else {
-            if (adView != null){
-                adView.setEnabled(false);
-                adView.setVisibility(View.GONE);
-            }
-            if(mainLinear != null)
-                mainLinear.removeAllViews();
+        post(() -> {
+            if(enabled){
+                setVisibility(View.VISIBLE);
+                init();
+            } else {
+                if (adView != null){
+                    adView.setEnabled(false);
+                    adView.setVisibility(View.GONE);
+                }
+                if(mainLinear != null)
+                    mainLinear.removeAllViews();
 
-            this.removeAllViews();
-            setVisibility(View.GONE);
-        }
-        this.adsEnabled = enabled;
+                this.removeAllViews();
+                setVisibility(View.GONE);
+            }
+            this.adsEnabled = enabled;
+        });
     }
 
     public interface OnUserWantsPremiumListener{
