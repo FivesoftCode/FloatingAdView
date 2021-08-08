@@ -112,23 +112,31 @@ public class FloatingAdView extends LinearLayout {
         if(adsEnabled == enabled)
             return;
 
-        post(() -> {
-            if(enabled){
-                setVisibility(View.VISIBLE);
-                init();
-            } else {
-                if (adView != null){
-                    adView.setEnabled(false);
-                    adView.setVisibility(View.GONE);
-                }
-                if(mainLinear != null)
-                    mainLinear.removeAllViews();
-
-                this.removeAllViews();
-                setVisibility(View.GONE);
+        if(enabled){
+            setVisibility(View.VISIBLE);
+            init();
+        } else {
+            if (adView != null){
+                adView.setEnabled(false);
+                adView.setVisibility(View.GONE);
             }
-            this.adsEnabled = enabled;
-        });
+            if(mainLinear != null)
+                mainLinear.removeAllViews();
+
+            this.removeAllViews();
+            setVisibility(View.GONE);
+        }
+
+
+        this.adsEnabled = enabled;
+    }
+
+    /**
+     * @return true weather ads are enabled, otherwise false.
+     */
+
+    public boolean areAdsEnabled(){
+        return adsEnabled;
     }
 
     public interface OnUserWantsPremiumListener{
@@ -174,6 +182,12 @@ public class FloatingAdView extends LinearLayout {
     }
 
     private void init(){
+
+        if(!adsEnabled){
+            setVisibility(GONE);
+            return;
+        }
+
         LayoutInflater.from(getContext()).inflate(R.layout.fivesoft_floating_ad_view_main, this);
         mainLinear = findViewById(R.id.main_linear);
         goPremium = initGoPremiumView();
@@ -183,10 +197,13 @@ public class FloatingAdView extends LinearLayout {
         setBackgroundColor(adColor);
 
         if(initializeMobileAds) {
-            MobileAds.initialize(getContext(), initializationStatus -> {
+
+            Runnable runnable = () -> MobileAds.initialize(getContext(), initializationStatus -> {
                 loadAd(adUnitId);
                 MobileAds.setRequestConfiguration(new RequestConfiguration.Builder().setTestDeviceIds(testDevices).build());
             });
+            new Thread(runnable).start();
+
         } else {
             loadAd(adUnitId);
         }
@@ -194,6 +211,11 @@ public class FloatingAdView extends LinearLayout {
 
     private void loadAd(String adUnit){
         post(() -> {
+
+            if(!adsEnabled){
+                setVisibility(GONE);
+                return;
+            }
 
             adView = new AdView(getContext());
             adView.setAdSize(AdSize.BANNER);
